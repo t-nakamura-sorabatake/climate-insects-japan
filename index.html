@@ -1,0 +1,1537 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>+1℃, +2℃, +3℃ — 北上する害虫の未来年表</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #050912;
+    --bg-mid: #0c1628;
+    --bg-card: #131f36;
+    --bg-card-hi: #1b2a48;
+    --line: rgba(148, 163, 184, 0.12);
+    --line-strong: rgba(148, 163, 184, 0.25);
+    --text: #f1f5f9;
+    --text-mid: #cbd5e1;
+    --muted: #94a3b8;
+    --dim: #64748b;
+    --accent: #fbbf24;
+    --accent-warm: #f59e0b;
+    --danger: #ef4444;
+    --danger-soft: #fca5a5;
+    --warning: #f97316;
+    --info: #38bdf8;
+    --info-soft: #7dd3fc;
+    --safe: #22c55e;
+    --serif: 'Noto Serif JP', serif;
+    --sans: 'Zen Kaku Gothic New', sans-serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+  
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body {
+    background: var(--bg-deep);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    min-height: 100vh;
+    padding: 40px 20px;
+    background-image: 
+      radial-gradient(ellipse at top, rgba(56, 189, 248, 0.08), transparent 50%),
+      radial-gradient(ellipse at bottom, rgba(251, 191, 36, 0.06), transparent 50%);
+  }
+  
+  .infographic {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: linear-gradient(180deg, var(--bg-mid) 0%, var(--bg-deep) 100%);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 20px 80px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--line);
+  }
+  
+  /* ===== HERO ===== */
+  .hero {
+    padding: 56px 56px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: -10%;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.08), transparent 60%);
+    pointer-events: none;
+  }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 32px;
+    height: 1px;
+    background: var(--accent);
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: clamp(32px, 4.5vw, 48px);
+    line-height: 1.15;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
+  }
+  .hero h1 .accent {
+    color: var(--accent);
+    font-style: italic;
+  }
+  .hero .lede {
+    font-family: var(--serif);
+    font-size: 16px;
+    color: var(--text-mid);
+    line-height: 1.7;
+    max-width: 720px;
+  }
+  
+  /* ===== TIMELINE CONTROL ===== */
+  .timeline-control {
+    margin-top: 40px;
+    padding: 32px;
+    background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-card-hi) 100%);
+    border-radius: 6px;
+    border: 1px solid var(--line-strong);
+  }
+  .timeline-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .timeline-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .timeline-current {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+  .timeline-year {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 56px;
+    line-height: 1;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+  .timeline-temp {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--accent);
+    transition: color 0.5s;
+  }
+  .timeline-temp.t-2 { color: var(--warning); }
+  .timeline-temp.t-3 { color: var(--danger); }
+  .timeline-state-name {
+    font-family: var(--serif);
+    font-size: 18px;
+    color: var(--text);
+    text-align: right;
+    max-width: 260px;
+  }
+  .timeline-state-name .small {
+    display: block;
+    font-size: 12px;
+    color: var(--muted);
+    font-family: var(--sans);
+    margin-top: 4px;
+  }
+  
+  /* Custom slider */
+  .slider-track-wrap {
+    position: relative;
+    padding: 0 12px;
+    margin-bottom: 8px;
+  }
+  .slider-track {
+    height: 6px;
+    background: linear-gradient(90deg, 
+      var(--info) 0%, 
+      var(--accent) 33%, 
+      var(--warning) 66%, 
+      var(--danger) 100%);
+    border-radius: 3px;
+    position: relative;
+  }
+  .slider-thumb {
+    position: absolute;
+    top: 50%;
+    width: 28px;
+    height: 28px;
+    background: var(--text);
+    border: 3px solid var(--bg-card);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.4), 0 0 0 4px rgba(251, 191, 36, 0.2);
+    transition: left 0.6s cubic-bezier(0.65, 0, 0.35, 1), box-shadow 0.3s;
+    z-index: 2;
+  }
+  .slider-thumb:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.4), 0 0 0 8px rgba(251, 191, 36, 0.3); }
+  .slider-stops {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+  }
+  .slider-stop {
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    color: var(--muted);
+    padding: 12px 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: var(--sans);
+    font-size: 11px;
+    transition: all 0.3s;
+    text-align: center;
+    flex: 1;
+    margin: 0 4px;
+    line-height: 1.4;
+  }
+  .slider-stop:first-child { margin-left: 0; }
+  .slider-stop:last-child { margin-right: 0; }
+  .slider-stop:hover {
+    background: var(--bg-card-hi);
+    color: var(--text);
+  }
+  .slider-stop.active {
+    background: rgba(251, 191, 36, 0.1);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .slider-stop strong {
+    display: block;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 2px;
+  }
+  
+  /* ===== KEY STATS ===== */
+  .key-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+  .key-stat {
+    padding: 0 16px;
+    border-right: 1px solid var(--line);
+    transition: opacity 0.5s;
+  }
+  .key-stat:last-child { border-right: none; }
+  .key-stat:first-child { padding-left: 0; }
+  .key-stat-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .key-stat-value {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--text);
+    transition: color 0.5s;
+  }
+  .key-stat-value.warn { color: var(--warning); }
+  .key-stat-value.danger { color: var(--danger); }
+  .key-stat-value .unit {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 400;
+    margin-left: 3px;
+  }
+  
+  /* ===== SECTION ===== */
+  .section {
+    padding: 48px 56px;
+    border-bottom: 1px solid var(--line);
+  }
+  .section-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--info);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .section h2 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 28px;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .section-desc {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 32px;
+    max-width: 680px;
+  }
+  
+  /* ===== MAP SECTION ===== */
+  .map-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+  .map-wrapper {
+    background: var(--bg-card);
+    border-radius: 4px;
+    padding: 28px;
+    border: 1px solid var(--line);
+    position: relative;
+  }
+  .map-corner {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border: 1px solid var(--accent);
+  }
+  .map-corner.tl { top: 8px; left: 8px; border-right: none; border-bottom: none; }
+  .map-corner.tr { top: 8px; right: 8px; border-left: none; border-bottom: none; }
+  .map-corner.bl { bottom: 8px; left: 8px; border-right: none; border-top: none; }
+  .map-corner.br { bottom: 8px; right: 8px; border-left: none; border-top: none; }
+  
+  .map-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .island { fill: #2d4670; stroke: rgba(125, 211, 252, 0.4); stroke-width: 0.8; }
+  .island-label {
+    fill: rgba(255,255,255,0.55);
+    font-family: var(--serif);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+  }
+  .lat-grid { stroke: rgba(148, 163, 184, 0.1); stroke-width: 0.5; stroke-dasharray: 1 3; }
+  .lat-text {
+    fill: var(--dim);
+    font-family: var(--mono);
+    font-size: 8px;
+  }
+  .lat-text.tokyo { fill: var(--accent); font-weight: 600; }
+  .city-text { fill: var(--accent); font-family: var(--mono); font-size: 9px; font-weight: 600; }
+  
+  /* Range animations */
+  .range-group {
+    transition: transform 1s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  .range-line {
+    stroke-width: 1.5;
+    fill: none;
+    transition: opacity 0.6s, stroke 0.6s;
+  }
+  .range-current { stroke: #fbbf24; opacity: 0.95; }
+  .range-future-1 { stroke: #f97316; opacity: 0.95; stroke-dasharray: 4 3; }
+  .range-future-2 { stroke: #ef4444; opacity: 0.95; stroke-dasharray: 4 3; }
+  .range-future-3 { stroke: #b91c1c; opacity: 0.95; stroke-dasharray: 2 2; }
+  .range-label {
+    font-family: var(--mono);
+    font-size: 8px;
+    font-weight: 600;
+    transition: opacity 0.6s;
+  }
+  .range-label.current { fill: #fbbf24; }
+  .range-label.future { fill: #ef4444; }
+  
+  /* New species appearing (for ネッタイシマカ) */
+  .conditional {
+    opacity: 0;
+    transition: opacity 0.8s;
+  }
+  .conditional.visible { opacity: 1; }
+  
+  /* ===== NARRATIVE PANEL ===== */
+  .narrative-panel {
+    background: var(--bg-card);
+    border-radius: 4px;
+    padding: 28px;
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    transition: border-left-color 0.5s;
+    min-height: 600px;
+  }
+  .narrative-panel.t-1 { border-left-color: var(--accent-warm); }
+  .narrative-panel.t-2 { border-left-color: var(--warning); }
+  .narrative-panel.t-3 { border-left-color: var(--danger); }
+  
+  .narrative-state {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .narrative-headline {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 1.3;
+    margin-bottom: 16px;
+    letter-spacing: -0.01em;
+  }
+  .narrative-summary {
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+  
+  .impact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .impact-item {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 12px;
+    align-items: start;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .impact-item:last-child { border-bottom: none; }
+  .impact-icon {
+    font-size: 18px;
+    line-height: 1.4;
+  }
+  .impact-text {
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text-mid);
+  }
+  .impact-text strong {
+    color: var(--text);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 4px;
+    font-family: var(--serif);
+    font-size: 13px;
+  }
+  
+  /* ===== SPECIES TABLE ===== */
+  .species-section {
+    margin-top: 40px;
+  }
+  .species-table-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--info);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .species-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .species-table th {
+    text-align: left;
+    padding: 12px 14px;
+    background: var(--bg-card);
+    border-bottom: 2px solid var(--line-strong);
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .species-table th:first-child {
+    width: 220px;
+  }
+  .species-table td {
+    padding: 14px;
+    border-bottom: 1px solid var(--line);
+    color: var(--text-mid);
+    font-size: 12px;
+    transition: all 0.4s;
+  }
+  .species-table td.species-cell {
+    color: var(--text);
+    font-weight: 500;
+    font-family: var(--serif);
+  }
+  .species-table td .latin {
+    display: block;
+    font-family: var(--mono);
+    font-style: italic;
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-weight: 400;
+  }
+  .species-table td.active {
+    background: rgba(251, 191, 36, 0.12);
+    color: var(--text);
+    font-weight: 600;
+    border-left: 2px solid var(--accent);
+    padding-left: 12px;
+  }
+  .species-table td.active.t-2 {
+    background: rgba(249, 115, 22, 0.15);
+    border-left-color: var(--warning);
+  }
+  .species-table td.active.t-3 {
+    background: rgba(239, 68, 68, 0.15);
+    border-left-color: var(--danger);
+  }
+  
+  /* ===== SATELLITE ===== */
+  .sat-section {
+    background: linear-gradient(180deg, var(--bg-mid) 0%, var(--bg-deep) 100%);
+  }
+  
+  /* ===== GOSAT TIMELINE ===== */
+  .gosat-timeline {
+    position: relative;
+    height: 80px;
+    margin: 32px 0 40px;
+    padding: 0 40px;
+  }
+  .gosat-timeline-track {
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    right: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, 
+      rgba(56, 189, 248, 0.3) 0%, 
+      rgba(56, 189, 248, 0.6) 50%, 
+      var(--accent) 100%);
+  }
+  .gosat-timeline-stop {
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    text-align: center;
+  }
+  .gosat-timeline-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--bg-deep);
+    border: 2px solid var(--info);
+    margin: 22px auto 8px;
+    transition: all 0.3s;
+  }
+  .gosat-timeline-stop.active .gosat-timeline-dot {
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.2);
+  }
+  .gosat-timeline-year {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--info);
+    letter-spacing: 0.1em;
+    margin-bottom: 2px;
+  }
+  .gosat-timeline-stop.active .gosat-timeline-year {
+    color: var(--accent);
+  }
+  .gosat-timeline-name {
+    font-family: var(--serif);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  
+  /* ===== GOSAT CARDS ===== */
+  .gosat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .gosat-card {
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(56, 189, 248, 0.04) 100%);
+    border: 1px solid rgba(56, 189, 248, 0.15);
+    border-radius: 4px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .gosat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 100px; height: 100px;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.18), transparent 70%);
+    pointer-events: none;
+  }
+  .gosat-card.featured {
+    border-color: rgba(251, 191, 36, 0.4);
+    background: linear-gradient(135deg, var(--bg-card) 0%, rgba(251, 191, 36, 0.06) 100%);
+  }
+  .gosat-card.featured::before {
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.2), transparent 70%);
+  }
+  .gosat-card-badge {
+    position: absolute;
+    top: 16px; right: 16px;
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--accent);
+    background: rgba(251, 191, 36, 0.15);
+    padding: 4px 10px;
+    border-radius: 2px;
+    letter-spacing: 0.15em;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+  }
+  .gosat-card-year {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--info);
+    letter-spacing: 0.2em;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .gosat-card.featured .gosat-card-year {
+    color: var(--accent);
+  }
+  .gosat-card-name {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 24px;
+    color: var(--text);
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+  .gosat-card-name .en {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-left: 8px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+  }
+  .gosat-card-org {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+  .gosat-card-tagline {
+    font-family: var(--serif);
+    font-size: 13px;
+    color: var(--info-soft);
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px dashed var(--line);
+    line-height: 1.4;
+    font-weight: 500;
+  }
+  .gosat-card.featured .gosat-card-tagline {
+    color: var(--accent);
+  }
+  .gosat-card-row {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 10px;
+    padding: 8px 0;
+    font-size: 11px;
+    line-height: 1.5;
+    border-bottom: 1px dotted var(--line);
+  }
+  .gosat-card-row:last-of-type {
+    border-bottom: none;
+  }
+  .gosat-card-row-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding-top: 2px;
+  }
+  .gosat-card-row-value {
+    color: var(--text);
+    font-weight: 500;
+  }
+  .gosat-card-row-value strong {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .gosat-card-row-value .muted-small {
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 400;
+    font-family: var(--sans);
+  }
+  .gosat-card-purpose {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--line);
+    font-size: 12px;
+    color: var(--text-mid);
+    line-height: 1.7;
+  }
+  
+  /* GOSAT callout */
+  .gosat-callout {
+    margin-top: 28px;
+    padding: 24px 28px;
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.06) 0%, rgba(56, 189, 248, 0.04) 100%);
+    border: 1px solid rgba(251, 191, 36, 0.25);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 18px;
+    align-items: start;
+  }
+  .gosat-callout-icon {
+    font-size: 32px;
+    line-height: 1;
+  }
+  .gosat-callout-text {
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.7;
+  }
+  .gosat-callout-text strong {
+    display: block;
+    font-family: var(--serif);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  
+  /* ===== FOOTER ===== */
+  .footer {
+    padding: 28px 56px;
+    background: var(--bg-deep);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .footer-source {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--dim);
+    line-height: 1.6;
+  }
+  .footer-brand {
+    font-family: var(--serif);
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+  
+  /* Hint */
+  .hint {
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 16px;
+    letter-spacing: 0.1em;
+  }
+  .hint .key {
+    background: var(--bg-card-hi);
+    padding: 2px 8px;
+    border-radius: 3px;
+    color: var(--text);
+    font-weight: 600;
+  }
+  
+  @media (max-width: 900px) {
+    .map-grid, .gosat-grid { grid-template-columns: 1fr; }
+    .key-stats { grid-template-columns: repeat(2, 1fr); }
+    .key-stats .key-stat:nth-child(2) { border-right: none; }
+    .timeline-current { flex-direction: column; align-items: flex-start; gap: 8px; }
+    .timeline-year { font-size: 40px; }
+    .timeline-state-name { text-align: left; }
+    .section, .hero, .footer { padding: 32px 24px; }
+    .timeline-control { padding: 20px; }
+    .slider-stops { flex-wrap: wrap; }
+    .slider-stop { flex: 1 1 45%; min-width: 0; }
+    .gosat-timeline { padding: 0 20px; }
+    .gosat-callout { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="infographic">
+
+  <!-- ===== HERO ===== -->
+  <header class="hero">
+    <div class="eyebrow">CLIMATE × SATELLITE × ECOLOGY · INTERACTIVE</div>
+    <h1>+1.5℃, +2℃, +3℃<br>北上する害虫の<span class="accent">未来年表</span></h1>
+    <p class="lede">
+      2024年、世界の平均気温は産業革命前比でついに単年+1.55℃を超えました（WMO発表）。次の防衛線「長期+1.5℃」「+2℃」「+3℃」は、それぞれ何年に到達するのか。スライダーを動かして、各シナリオで害虫の分布がどう変化するか、東京・本州・北海道に何が定着するのかを確認できます。
+    </p>
+    
+    <!-- ===== TIMELINE CONTROL ===== -->
+    <div class="timeline-control">
+      <div class="timeline-header">
+        <div>
+          <div class="timeline-label">SCENARIO</div>
+          <div class="timeline-current">
+            <div class="timeline-year" id="year-display">2024</div>
+            <div class="timeline-temp" id="temp-display">+1.55℃</div>
+          </div>
+        </div>
+        <div class="timeline-state-name" id="state-display">
+          現在の日本（2024年実測）
+          <span class="small">世界平均で初めて単年+1.55℃を突破（WMO 2025年1月確定）</span>
+        </div>
+      </div>
+      
+      <div class="slider-track-wrap">
+        <div class="slider-track"></div>
+        <div class="slider-thumb" id="slider-thumb" style="left: 0%;"></div>
+      </div>
+      
+      <div class="slider-stops" id="slider-stops">
+        <button class="slider-stop active" data-t="0">
+          <strong>2024</strong>
+          基準（観測値）
+        </button>
+        <button class="slider-stop" data-t="1">
+          <strong>2030s</strong>
+          +1.5℃
+        </button>
+        <button class="slider-stop" data-t="2">
+          <strong>2050s</strong>
+          +2℃
+        </button>
+        <button class="slider-stop" data-t="3">
+          <strong>2090s</strong>
+          +3℃
+        </button>
+      </div>
+      
+      <div class="hint">
+        ▼ <span class="key">←</span> <span class="key">→</span> キーまたはボタンで移動
+      </div>
+      
+      <!-- KEY STATS (animated) -->
+      <div class="key-stats">
+        <div class="key-stat">
+          <div class="key-stat-label">緯度の北上</div>
+          <div class="key-stat-value" id="stat-shift">+186<span class="unit">km</span></div>
+        </div>
+        <div class="key-stat">
+          <div class="key-stat-label">蚊の生息可能域</div>
+          <div class="key-stat-value" id="stat-mosquito">本州全域・道南へ<span class="unit"></span></div>
+        </div>
+        <div class="key-stat">
+          <div class="key-stat-label">水田害虫の世代数増加</div>
+          <div class="key-stat-value" id="stat-gen">+0<span class="unit">世代</span></div>
+        </div>
+        <div class="key-stat">
+          <div class="key-stat-label">熱帯感染症リスク</div>
+          <div class="key-stat-value" id="stat-disease">既知種で増加<span class="unit"></span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== MAP SECTION ===== -->
+  <section class="section">
+    <div class="section-eyebrow">CHAPTER 01 / NORTHERN LIMIT MOVEMENT</div>
+    <h2>害虫の北限ライン、温度上昇とともに動く</h2>
+    <p class="section-desc">
+      上のスライダーを動かすと、各種の北限ラインが連動して移動します。実線=現在、破線=将来予測。
+    </p>
+
+    <div class="map-grid">
+      <!-- MAP -->
+      <div class="map-wrapper">
+        <span class="map-corner tl"></span>
+        <span class="map-corner tr"></span>
+        <span class="map-corner bl"></span>
+        <span class="map-corner br"></span>
+        
+        <svg class="map-svg" viewBox="0 0 520 600" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="tempGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#1e40af" stop-opacity="0.18"/>
+              <stop offset="35%" stop-color="#0891b2" stop-opacity="0.12"/>
+              <stop offset="60%" stop-color="#eab308" stop-opacity="0.12"/>
+              <stop offset="80%" stop-color="#f97316" stop-opacity="0.16"/>
+              <stop offset="100%" stop-color="#dc2626" stop-opacity="0.22"/>
+            </linearGradient>
+          </defs>
+          
+          <rect x="20" y="20" width="480" height="560" fill="url(#tempGrad)"/>
+          
+          <!-- Latitude grid -->
+          <g class="lat-lines">
+            <line x1="20" y1="55" x2="500" y2="55" class="lat-grid"/>
+            <text x="28" y="51" class="lat-text">45°N · 札幌</text>
+            <line x1="20" y1="160" x2="500" y2="160" class="lat-grid"/>
+            <text x="28" y="156" class="lat-text">41°N · 青森</text>
+            <line x1="20" y1="245" x2="500" y2="245" class="lat-grid"/>
+            <text x="28" y="241" class="lat-text">38°N · 仙台</text>
+            <line x1="20" y1="335" x2="500" y2="335" class="lat-grid"/>
+            <text x="28" y="331" class="lat-text tokyo">35.7°N · 東京</text>
+            <line x1="20" y1="415" x2="500" y2="415" class="lat-grid"/>
+            <text x="28" y="411" class="lat-text">33°N · 福岡</text>
+            <line x1="20" y1="510" x2="500" y2="510" class="lat-grid"/>
+            <text x="28" y="506" class="lat-text">28°N · 那覇</text>
+          </g>
+          
+          <!-- Japan stylized -->
+          <path class="island" d="M 360 65 Q 385 55 405 65 Q 425 70 432 95 Q 435 120 425 140 Q 415 155 395 158 Q 370 158 355 145 Q 343 128 345 105 Q 348 80 360 65 Z"/>
+          <text x="388" y="112" class="island-label" text-anchor="middle">HOKKAIDO</text>
+          
+          <path class="island" d="M 335 175 Q 350 185 358 210 L 370 245 Q 378 268 370 290 L 358 312 Q 348 332 332 342 L 312 348 Q 295 344 290 326 L 286 295 Q 290 270 300 245 L 312 215 Q 320 195 335 175 Z"/>
+          
+          <path class="island" d="M 290 332 Q 280 345 265 350 L 235 355 Q 205 358 178 354 L 152 348 Q 132 340 125 322 Q 122 308 130 298 L 145 290 Q 168 286 188 290 L 215 295 Q 240 292 258 280 L 275 312 Q 282 328 290 332 Z"/>
+          <text x="232" y="328" class="island-label" text-anchor="middle">HONSHU</text>
+          
+          <circle cx="290" cy="335" r="3.5" fill="#fbbf24"/>
+          <circle cx="290" cy="335" r="8" fill="none" stroke="#fbbf24" stroke-width="0.8" opacity="0.6">
+            <animate attributeName="r" values="6;14;6" dur="3s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.6;0;0.6" dur="3s" repeatCount="indefinite"/>
+          </circle>
+          <text x="298" y="339" class="city-text">TOKYO</text>
+          
+          <path class="island" d="M 158 370 Q 178 368 195 374 Q 205 384 198 394 Q 178 398 158 392 Q 148 380 158 370 Z"/>
+          <text x="176" y="386" class="island-label" text-anchor="middle">SHIKOKU</text>
+          
+          <path class="island" d="M 105 388 Q 122 385 135 398 Q 145 415 142 435 Q 135 458 122 462 Q 102 462 92 448 Q 85 430 90 410 Q 95 392 105 388 Z"/>
+          <text x="115" y="426" class="island-label" text-anchor="middle">KYUSHU</text>
+          
+          <ellipse cx="78" cy="408" rx="3" ry="6" class="island"/>
+          <ellipse cx="60" cy="515" rx="14" ry="5" class="island"/>
+          <text x="60" y="532" class="island-label" text-anchor="middle">OKINAWA</text>
+          
+          <!-- ===== ANIMATED RANGE LINES ===== -->
+          <!-- Each <g> has data-shift indicating px shift per °C -->
+          
+          <!-- ヒトスジシマカ : current at 168, +1=95, +2=60 (off Hokkaido), +3=off-map -->
+          <g id="r-mosquito" class="range-group" data-shifts="0,-73,-108,-130">
+            <path d="M 92 168 Q 200 163 290 170 Q 380 168 460 168" class="range-line range-current"/>
+            <text x="250" y="160" class="range-label current" text-anchor="middle">🦟 ヒトスジシマカ</text>
+          </g>
+          
+          <!-- ナガサキアゲハ : current at 258, +1=195, +2=130, +3=80 -->
+          <g id="r-nagasaki" class="range-group" data-shifts="0,-63,-128,-178">
+            <path d="M 92 258 Q 200 252 290 258 Q 380 258 460 258" class="range-line range-current"/>
+            <text x="250" y="250" class="range-label current" text-anchor="middle">🦋 ナガサキアゲハ</text>
+          </g>
+          
+          <!-- クマゼミ : current at 322, +1=260, +2=200, +3=140 -->
+          <g id="r-kumazemi" class="range-group" data-shifts="0,-62,-122,-182">
+            <path d="M 92 322 Q 200 318 290 325 Q 360 325 430 325" class="range-line range-current"/>
+            <text x="220" y="315" class="range-label current" text-anchor="middle">🦗 クマゼミ</text>
+          </g>
+          
+          <!-- ミナミアオカメムシ : current at 348, +1=282, +2=220, +3=160 -->
+          <g id="r-stinkbug" class="range-group" data-shifts="0,-66,-128,-188">
+            <path d="M 92 348 Q 200 345 290 352 Q 360 352 410 352" class="range-line range-current"/>
+            <text x="200" y="365" class="range-label current" text-anchor="middle">🪲 ミナミアオカメムシ</text>
+          </g>
+          
+          <!-- SFTSマダニ : current at 384, +1=322, +2=265, +3=205 -->
+          <g id="r-tick" class="range-group" data-shifts="0,-62,-119,-179">
+            <path d="M 92 384 Q 180 382 250 388 Q 290 390 320 390" class="range-line range-current"/>
+            <text x="155" y="378" class="range-label current" text-anchor="middle">🕷️ SFTSマダニ</text>
+          </g>
+          
+          <!-- ベニトンボ : current at 380 (近畿), +1=318 (関東), +2=258 (東北南), +3=200 (東北) -->
+          <g id="r-dragonfly" class="range-group" data-shifts="0,-62,-122,-180">
+            <path d="M 92 400 Q 180 398 250 402 Q 290 404 330 404" class="range-line range-current" opacity="0.7"/>
+            <text x="170" y="416" class="range-label current" text-anchor="middle" opacity="0.7">🪰 ベニトンボ</text>
+          </g>
+          
+          <!-- ヒアリ侵入拠点 (port) - dot intensifies with T -->
+          <g id="r-fireant">
+            <circle cx="115" cy="445" r="4" fill="#ef4444" opacity="0.6" id="fireant-dot"/>
+            <circle cx="220" cy="362" r="3" fill="#ef4444" opacity="0.6"/>
+            <circle cx="290" cy="345" r="3" fill="#ef4444" opacity="0.6"/>
+            <circle cx="385" cy="320" r="3" fill="#ef4444" opacity="0.6"/>
+          </g>
+          
+          <!-- ツマアカスズメバチ -->
+          <g id="r-hornet">
+            <circle cx="78" cy="408" r="5" fill="#ef4444" opacity="0.7"/>
+            <circle cx="78" cy="408" r="8" fill="none" stroke="#ef4444" stroke-width="0.8" opacity="0.5">
+              <animate attributeName="r" values="5;14;5" dur="2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.7;0;0.7" dur="2s" repeatCount="indefinite"/>
+            </circle>
+          </g>
+          
+          <!-- ネッタイシマカ - APPEARS only at T>=2 -->
+          <g id="r-aedes-aegypti" class="conditional">
+            <ellipse cx="60" cy="515" rx="22" ry="9" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3 2"/>
+            <text x="100" y="495" class="range-label future" text-anchor="start">🦟 ネッタイシマカ 定着</text>
+            <line x1="100" y1="498" x2="80" y2="510" stroke="#ef4444" stroke-width="0.8" stroke-dasharray="2 2"/>
+          </g>
+          
+          <!-- ネッタイシマカ extended at T=3 -->
+          <g id="r-aedes-aegypti-ext" class="conditional">
+            <path d="M 92 425 Q 130 425 165 430 Q 200 432 230 432" stroke="#b91c1c" stroke-width="1.5" stroke-dasharray="2 2" fill="none" opacity="0.9"/>
+            <text x="120" y="440" class="range-label future" text-anchor="start" fill="#b91c1c">+3℃ → 九州・四国南部</text>
+          </g>
+          
+        </svg>
+        
+        <div style="margin-top: 16px; padding: 12px 16px; background: rgba(11, 20, 38, 0.5); border-radius: 4px; font-size: 11px; color: var(--muted); line-height: 1.5;">
+          <strong style="color: var(--accent); font-family: var(--serif);">読み方</strong>　黄実線=現在の北限／橙〜赤の破線=温度上昇後の予測北限。スライダー連動で各ラインが北上します。
+        </div>
+      </div>
+      
+      <!-- NARRATIVE PANEL -->
+      <div class="narrative-panel" id="narrative-panel">
+        <div class="narrative-state" id="narrative-state">CURRENT · 2025</div>
+        <h3 class="narrative-headline" id="narrative-headline">既に過去比+1℃の影響下</h3>
+        <p class="narrative-summary" id="narrative-summary">
+          東日本太平洋側は1980年比で2℃以上上昇している地域もあり、ヒトスジシマカは青森まで、ナガサキアゲハは宮城まで到達。クマゼミは東京で常在化。SFTSなどマダニ媒介感染症の症例が西日本で年々増加中。
+        </p>
+        <div class="impact-list" id="impact-list">
+          <div class="impact-item">
+            <div class="impact-icon">🦟</div>
+            <div class="impact-text">
+              <strong>蚊の媒介感染症</strong>
+              ヒトスジシマカが本州全域に到達。代々木公園のデング熱（2014年）のような事例の再発リスク。
+            </div>
+          </div>
+          <div class="impact-item">
+            <div class="impact-icon">🕷️</div>
+            <div class="impact-text">
+              <strong>マダニ媒介SFTS</strong>
+              西日本中心に年間100例規模、致死率最大30%。関東でも症例が増加傾向。
+            </div>
+          </div>
+          <div class="impact-item">
+            <div class="impact-icon">🪲</div>
+            <div class="impact-text">
+              <strong>農業害虫の北上</strong>
+              ミナミアオカメムシ、ツマジロクサヨトウ等が西日本〜関東へ拡大。水稲・果樹被害が顕在化。
+            </div>
+          </div>
+          <div class="impact-item">
+            <div class="impact-icon">🐜</div>
+            <div class="impact-text">
+              <strong>侵入種の上陸圧</strong>
+              ヒアリは港湾で発見継続、ツマアカスズメバチは対馬で定着。本州への拡大は時間の問題。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- SPECIES TABLE -->
+    <div class="species-section">
+      <div class="species-table-title">▍ 種ごとの分布シナリオ</div>
+      <table class="species-table" id="species-table">
+        <thead>
+          <tr>
+            <th>種 / 学名</th>
+            <th data-col="0">現在 (2024実測)</th>
+            <th data-col="1">+1.5℃ (2030s)</th>
+            <th data-col="2">+2℃ (2050s)</th>
+            <th data-col="3">+3℃ (2090s)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="species-cell">🦟 ヒトスジシマカ<span class="latin">Aedes albopictus</span></td>
+            <td data-col="0">青森まで・本州全域</td>
+            <td data-col="1">道南・道央</td>
+            <td data-col="2">北海道全域</td>
+            <td data-col="3">通年活動・全国常在</td>
+          </tr>
+          <tr>
+            <td class="species-cell">🦟 ネッタイシマカ<span class="latin">Aedes aegypti</span></td>
+            <td data-col="0">未定着</td>
+            <td data-col="1">沖縄定着リスク</td>
+            <td data-col="2">沖縄定着</td>
+            <td data-col="3">九州・四国南部</td>
+          </tr>
+          <tr>
+            <td class="species-cell">🕷️ SFTSマダニ類<span class="latin">SFTS vector ticks</span></td>
+            <td data-col="0">西日本中心</td>
+            <td data-col="1">関東全域</td>
+            <td data-col="2">東北南部まで</td>
+            <td data-col="3">北海道へ</td>
+          </tr>
+          <tr>
+            <td class="species-cell">🪲 ミナミアオカメムシ<span class="latin">Nezara viridula</span></td>
+            <td data-col="0">関東縁辺</td>
+            <td data-col="1">東北南部</td>
+            <td data-col="2">東北全域・道南</td>
+            <td data-col="3">北海道広域</td>
+          </tr>
+          <tr>
+            <td class="species-cell">🐛 ツマジロクサヨトウ<span class="latin">Spodoptera frugiperda</span></td>
+            <td data-col="0">西日本21府県（夏季）</td>
+            <td data-col="1">全国（夏季飛来）</td>
+            <td data-col="2">本州で越冬定着</td>
+            <td data-col="3">通年発生・北海道へ</td>
+          </tr>
+          <tr>
+            <td class="species-cell">🐜 ヒアリ<span class="latin">Solenopsis invicta</span></td>
+            <td data-col="0">港湾発見のみ</td>
+            <td data-col="1">本州屋外定着リスク</td>
+            <td data-col="2">関東で野外コロニー</td>
+            <td data-col="3">本州全域に拡大</td>
+          </tr>
+          <tr>
+            <td class="species-cell">🐝 ツマアカスズメバチ<span class="latin">Vespa velutina</span></td>
+            <td data-col="0">対馬・北部九州</td>
+            <td data-col="1">九州本土全域</td>
+            <td data-col="2">中国・近畿地方</td>
+            <td data-col="3">関東まで</td>
+          </tr>
+          <tr>
+            <td class="species-cell">🦗 クマゼミ<span class="latin">Cryptotympana facialis</span></td>
+            <td data-col="0">関東北部</td>
+            <td data-col="1">仙台付近</td>
+            <td data-col="2">東北中部</td>
+            <td data-col="3">道南</td>
+          </tr>
+          <tr>
+            <td class="species-cell">🦋 ナガサキアゲハ<span class="latin">Papilio memnon</span></td>
+            <td data-col="0">宮城まで</td>
+            <td data-col="1">東北全域</td>
+            <td data-col="2">道南</td>
+            <td data-col="3">道央</td>
+          </tr>
+          <tr>
+            <td class="species-cell">🪰 ベニトンボ<span class="latin">Trithemis aurora</span></td>
+            <td data-col="0">近畿・四国</td>
+            <td data-col="1">関東到達</td>
+            <td data-col="2">東北南部</td>
+            <td data-col="3">東北全域</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== GOSAT SECTION ===== -->
+  <section class="section sat-section">
+    <div class="section-eyebrow">CHAPTER 02 / GOSAT SERIES</div>
+    <h2>害虫北上の「原因」を宇宙から見る — GOSATシリーズ</h2>
+    <p class="section-desc">
+      害虫の北上を引き起こしているのは温室効果ガス（CO₂・CH₄・NO₂）による地球温暖化。日本のGOSATシリーズは、その温室効果ガスを宇宙から直接観測する世界トップクラスのミッションです。2009年の初号機「いぶき」以来、日本が16年以上にわたって温暖化の根本原因を監視し続けてきました。
+    </p>
+    
+    <!-- Timeline ribbon -->
+    <div class="gosat-timeline">
+      <div class="gosat-timeline-track"></div>
+      <div class="gosat-timeline-stop" style="left: 5%;">
+        <div class="gosat-timeline-dot"></div>
+        <div class="gosat-timeline-year">2009</div>
+        <div class="gosat-timeline-name">いぶき</div>
+      </div>
+      <div class="gosat-timeline-stop" style="left: 50%;">
+        <div class="gosat-timeline-dot"></div>
+        <div class="gosat-timeline-year">2018</div>
+        <div class="gosat-timeline-name">いぶき2号</div>
+      </div>
+      <div class="gosat-timeline-stop active" style="left: 95%;">
+        <div class="gosat-timeline-dot"></div>
+        <div class="gosat-timeline-year">2025</div>
+        <div class="gosat-timeline-name">いぶきGW</div>
+      </div>
+    </div>
+    
+    <div class="gosat-grid">
+      <!-- GOSAT 1 -->
+      <div class="gosat-card">
+        <div class="gosat-card-year">2009</div>
+        <div class="gosat-card-name">いぶき<span class="en">GOSAT</span></div>
+        <div class="gosat-card-org">JAXA × 環境省 × NIES</div>
+        <div class="gosat-card-tagline">世界初の温室効果ガス観測衛星</div>
+        
+        <div class="gosat-card-row">
+          <div class="gosat-card-row-label">観測対象</div>
+          <div class="gosat-card-row-value">CO₂ / CH₄</div>
+        </div>
+        <div class="gosat-card-row">
+          <div class="gosat-card-row-label">主センサ</div>
+          <div class="gosat-card-row-value">TANSO-FTS<br><span class="muted-small">フーリエ干渉型分光計</span></div>
+        </div>
+        <div class="gosat-card-row">
+          <div class="gosat-card-row-label">空間分解能</div>
+          <div class="gosat-card-row-value">10km・点観測</div>
+        </div>
+        <div class="gosat-card-row">
+          <div class="gosat-card-row-label">運用状況</div>
+          <div class="gosat-card-row-value">2025年3月以降一時中断中</div>
+        </div>
+        
+        <div class="gosat-card-purpose">
+          人為起源のCO₂・CH₄濃度分布を全球で初めて長期観測。温暖化の進行を「見える化」する基礎データを2009年から提供してきた。
+        </div>
+      </div>
+      
+      <!-- GOSAT-2 -->
+      <div class="gosat-card">
+        <div class="gosat-card-year">2018</div>
+        <div class="gosat-card-name">いぶき2号<span class="en">GOSAT-2</span></div>
+        <div class="gosat-card-org">JAXA × 環境省 × NIES</div>
+        <div class="gosat-card-tagline">大都市の排出源を特定可能に</div>
+        
+        <div class="gosat-card-row">
+          <div class="gosat-card-row-label">観測対象</div>
+          <div class="gosat-card-row-value">CO₂ / CH₄ / <strong>CO</strong></div>
+        </div>
+        <div class="gosat-card-row">
+          <div class="gosat-card-row-label">主センサ</div>
+          <div class="gosat-card-row-value">TANSO-FTS-2<br><span class="muted-small">フーリエ干渉型・感度向上</span></div>
+        </div>
+        <div class="gosat-card-row">
+          <div class="gosat-card-row-label">空間分解能</div>
+          <div class="gosat-card-row-value">10km・点観測（高感度化）</div>
+        </div>
+        <div class="gosat-card-row">
+          <div class="gosat-card-row-label">運用状況</div>
+          <div class="gosat-card-row-value">運用中（2025年〜）</div>
+        </div>
+        
+        <div class="gosat-card-purpose">
+          一酸化炭素（CO）の同時観測を追加。化石燃料燃焼に伴う人為起源CO₂排出源を分離して推定可能になり、大都市別のメタン・CO排出量推定を実現。
+        </div>
+      </div>
+      
+      <!-- GOSAT-GW -->
+      <div class="gosat-card featured">
+        <div class="gosat-card-badge">LATEST</div>
+        <div class="gosat-card-year">2025</div>
+        <div class="gosat-card-name">いぶきGW<span class="en">GOSAT-GW</span></div>
+        <div class="gosat-card-org">JAXA × 環境省 × NIES</div>
+        <div class="gosat-card-tagline">温室効果ガス × 水循環のハイブリッド</div>
+        
+        <div class="gosat-card-row">
+          <div class="gosat-card-row-label">観測対象</div>
+          <div class="gosat-card-row-value">CO₂ / CH₄ / <strong>NO₂</strong> + 水循環全般</div>
+        </div>
+        <div class="gosat-card-row">
+          <div class="gosat-card-row-label">主センサ</div>
+          <div class="gosat-card-row-value">TANSO-3 + AMSR3<br><span class="muted-small">回折格子型分光計＋マイクロ波放射計</span></div>
+        </div>
+        <div class="gosat-card-row">
+          <div class="gosat-card-row-label">空間分解能</div>
+          <div class="gosat-card-row-value">広域10km×911km幅<br>精密3km×90km幅・<strong>面観測</strong></div>
+        </div>
+        <div class="gosat-card-row">
+          <div class="gosat-card-row-label">運用状況</div>
+          <div class="gosat-card-row-value">2025年10月定常運用へ移行</div>
+        </div>
+        
+        <div class="gosat-card-purpose">
+          H-IIAロケット最終号機（50号機）で2025年6月29日打上げ。「いぶき」シリーズと水循環衛星「しずく」を統合した進化系。観測データ量は従来の100〜1,000倍。NO₂同時観測で人為起源CO₂排出源の高精度特定が可能に。
+        </div>
+      </div>
+    </div>
+    
+    <div class="gosat-callout">
+      <div class="gosat-callout-icon">🛰️</div>
+      <div class="gosat-callout-text">
+        <strong>害虫マップとGOSATの関係</strong>
+        害虫の北上シナリオは「将来の年平均気温」予測に依存します。その気温予測の精度を支えているのが、GOSATシリーズが16年間にわたって積み上げてきた温室効果ガスの観測データ。各国が報告する排出量を独立検証し、気候モデルの妥当性を裏付ける役割を担っています。「いぶきGW」のNO₂同時観測により、今後は人為起源排出の特定がさらに進む見込みです。
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-source">
+      Source: 環境省 気候変動影響評価報告書 / 国立感染症研究所 / 国立環境研究所 / 農研機構 /<br>
+      JAXA・環境省・NIES「いぶき (GOSAT) / いぶき2号 (GOSAT-2) / いぶきGW (GOSAT-GW)」 / 桐谷圭治『地球温暖化と昆虫』他
+    </div>
+    <div class="footer-brand">SORABATAKE × CLIMATE INSECT REPORT</div>
+  </footer>
+
+</div>
+
+<script>
+(function() {
+  // === Data ===
+  const states = [
+    {
+      t: 0, year: '2024', temp: '+1.55℃', tempClass: '',
+      stateName: '現在の日本（2024年実測）',
+      stateSub: '世界平均で初めて単年+1.55℃を突破（WMO 2025年1月確定）。日本でも観測史上最も暑い年',
+      headline: '基準点はすでに動いている',
+      summary: '2024年は世界の平均気温が産業革命前比で初めて単年+1.5℃を超えた歴史的な年。WMOは1.55℃と確認した。日本では7月以降猛暑日が続き、気象庁は1898年の統計開始以来最も暑い年と発表。ヒトスジシマカは青森まで、ナガサキアゲハは宮城まで到達。SFTSなどマダニ媒介感染症が西日本で過去最多。',
+      stats: { shift: '+186', shiftUnit: 'km', mosquito: '本州全域・道南へ', gen: '+0', genUnit: '世代', disease: '既知種で増加', diseaseClass: '' },
+      shiftClass: '', genClass: '', diseaseClass: '',
+      panelClass: '',
+      impacts: [
+        { i: '🦟', t: '蚊の媒介感染症', d: 'ヒトスジシマカが本州全域に到達。代々木公園のデング熱（2014年）のような事例の再発リスク。' },
+        { i: '🕷️', t: 'マダニ媒介SFTS', d: '西日本中心に年間100例規模、致死率最大30%。関東でも症例が増加傾向。' },
+        { i: '🪲', t: '農業害虫の北上', d: 'ミナミアオカメムシ、ツマジロクサヨトウ等が西日本〜関東へ拡大。' },
+        { i: '🐜', t: '侵入種の上陸圧', d: 'ヒアリは港湾で発見継続、ツマアカスズメバチは対馬で定着。' }
+      ]
+    },
+    {
+      t: 1, year: '2030s', temp: '+1.5℃', tempClass: '',
+      stateName: '+1.5℃シナリオ（長期平均）',
+      stateSub: 'IPCC AR6：5つ全シナリオで2040年までに1.5℃到達。現状政策では2030年代前半',
+      headline: 'パリ協定の防衛線を越える',
+      summary: 'IPCC第6次評価報告書は、最も対策を進めた1.5℃努力シナリオでも2030年代前半に長期平均1.5℃に到達するとした。単年では2024年に既に超過。多年平均でも2030年代に常態化。ヒトスジシマカが北海道道南・道央へ。ミナミアオカメムシは東北南部まで定着。SFTSマダニ類が関東全域へ拡大し、東京近郊でもリスクが日常化。',
+      stats: { shift: '+180', shiftUnit: 'km', mosquito: '北海道道南', gen: '+1', genUnit: '世代', disease: '増加', diseaseClass: 'warn' },
+      shiftClass: 'warn', genClass: 'warn', diseaseClass: 'warn',
+      panelClass: 't-1',
+      impacts: [
+        { i: '🦟', t: 'ヒトスジシマカ北海道侵入', d: '函館・札幌で定着。北海道で初の蚊媒介デング熱対策が必要に。' },
+        { i: '🕷️', t: 'SFTS感染エリア東進', d: '関東全域でマダニ媒介感染症が日常的リスク化。年間症例数が2倍以上に。' },
+        { i: '🐜', t: 'ヒアリ屋外定着リスク', d: '本州南部で港湾外への拡散・屋外越冬の可能性が現実化。' },
+        { i: '🐛', t: '農業害虫の越冬定着', d: 'ツマジロクサヨトウが本州で越冬可能になり、毎年の被害が発生。' }
+      ]
+    },
+    {
+      t: 2, year: '2050s', temp: '+2℃', tempClass: 't-2',
+      stateName: '+2℃シナリオ',
+      stateSub: 'IPCC AR6中位排出（SSP2-4.5）で2050年代到達。2℃突破回避には2030年に2019年比CO2 25%減が必要',
+      headline: '逃げ場のない日本へ',
+      summary: '北海道全域がヒトスジシマカの生息可能域に。ネッタイシマカが沖縄に定着しデング熱の主要媒介種となる。水田害虫の年間世代数が1〜2増加し、天敵昆虫との非同期で生態系の天秤が害虫側に傾く。IPCCは2℃突破を防ぐには2030年までにCO2排出を25%削減（2019年比）が必要としており、現在のペースでは2050年代到達が現実的。',
+      stats: { shift: '+240', shiftUnit: 'km', mosquito: '北海道全域', gen: '+1〜2', genUnit: '世代', disease: '熱帯種定着', diseaseClass: 'danger' },
+      shiftClass: 'danger', genClass: 'danger', diseaseClass: 'danger',
+      panelClass: 't-2',
+      impacts: [
+        { i: '🦟', t: 'ネッタイシマカが沖縄に定着', d: 'デング熱の真の媒介種が国内常在化。戦前の沖縄での流行歴が現代に再来する懸念。' },
+        { i: '🌡️', t: '高温障害のパラドックス', d: '夏の30℃超で害虫自身も死ぬが、高地・北方への移動で被害域は拡大。平地の害虫が山岳部に追いやられる。' },
+        { i: '🕸️', t: '生態系のリズム崩壊', d: '害虫の発生期と作物の感受性期がシンクロ。天敵昆虫が温度応答で追従できず、捕食バランスが崩れる。' },
+        { i: '🦗', t: '通年活動する蚊・マダニ', d: '都市部のヒートアイランド+温暖化で、屋外でも冬に活動する蚊が出現。媒介感染症の季節性が消失。' }
+      ]
+    },
+    {
+      t: 3, year: '2090s', temp: '+3℃', tempClass: 't-3',
+      stateName: '+3℃シナリオ',
+      stateSub: 'IPCC AR6：現状の各国政策延長で21世紀末2.2〜3.5℃。対策不在の世界',
+      headline: '日本の生態系が再定義される',
+      summary: '蚊・マダニが通年活動。ネッタイシマカが九州・四国南部にまで拡大しデング熱が常在化。ハマダラカが本州南部へ進出しマラリア再流行リスク。北海道でクマゼミが鳴く時代。IPCC AR6は2020年までに実施された各国政策の延長線上で21世紀末に2.2〜3.5℃の上昇と予測。新規侵入種の定着障壁がほぼ消失する。',
+      stats: { shift: '+360', shiftUnit: 'km', mosquito: '通年・全国', gen: '+2〜3', genUnit: '世代', disease: '常在化', diseaseClass: 'danger' },
+      shiftClass: 'danger', genClass: 'danger', diseaseClass: 'danger',
+      panelClass: 't-3',
+      impacts: [
+        { i: '🦠', t: 'デング熱の地域内常在', d: '九州・四国南部でデング熱が毎年の流行病に。2014年代々木公園型の集団感染が常態化。' },
+        { i: '🦟', t: 'マラリア再流行リスク', d: 'コガタハマダラカが本州南部へ進出。19世紀の根絶以来初めての国内常在化リスク。' },
+        { i: '🌏', t: '新規侵入種の加速', d: 'サシガメ（シャーガス病）等、これまで考慮外だった熱帯害虫の侵入定着が現実化。' },
+        { i: '❄️', t: '北海道の温帯化', d: 'クマゼミが鳴き、ナガサキアゲハが舞う北海道へ。冬季の害虫死滅メカニズムがほぼ機能しなくなる。' }
+      ]
+    }
+  ];
+  
+  // === DOM refs ===
+  const slider = document.getElementById('slider-thumb');
+  const stops = document.querySelectorAll('.slider-stop');
+  const yearEl = document.getElementById('year-display');
+  const tempEl = document.getElementById('temp-display');
+  const stateEl = document.getElementById('state-display');
+  const headlineEl = document.getElementById('narrative-headline');
+  const summaryEl = document.getElementById('narrative-summary');
+  const stateNameEl = document.getElementById('narrative-state');
+  const impactsEl = document.getElementById('impact-list');
+  const panelEl = document.getElementById('narrative-panel');
+  
+  const statShift = document.getElementById('stat-shift');
+  const statMosquito = document.getElementById('stat-mosquito');
+  const statGen = document.getElementById('stat-gen');
+  const statDisease = document.getElementById('stat-disease');
+  
+  const tableCells = document.querySelectorAll('.species-table td[data-col]');
+  
+  let currentT = 0;
+  
+  function applyState(t) {
+    const s = states[t];
+    currentT = t;
+    
+    // Header
+    yearEl.textContent = s.year;
+    tempEl.textContent = s.temp;
+    tempEl.className = 'timeline-temp ' + s.tempClass;
+    stateEl.innerHTML = s.stateName + '<span class="small">' + s.stateSub + '</span>';
+    
+    // Slider thumb
+    slider.style.left = (t / 3 * 100) + '%';
+    
+    // Stops active state
+    stops.forEach(b => {
+      b.classList.toggle('active', parseInt(b.dataset.t) === t);
+    });
+    
+    // Stats
+    statShift.innerHTML = s.stats.shift + '<span class="unit">' + s.stats.shiftUnit + '</span>';
+    statShift.className = 'key-stat-value ' + s.shiftClass;
+    statMosquito.innerHTML = s.stats.mosquito;
+    statGen.innerHTML = s.stats.gen + '<span class="unit">' + s.stats.genUnit + '</span>';
+    statGen.className = 'key-stat-value ' + s.genClass;
+    statDisease.innerHTML = s.stats.disease;
+    statDisease.className = 'key-stat-value ' + s.stats.diseaseClass;
+    
+    // Narrative
+    stateNameEl.textContent = (t === 0 ? 'CURRENT · ' : 'SCENARIO · ') + s.year + (s.temp !== '基準' ? ' · ' + s.temp : '');
+    headlineEl.textContent = s.headline;
+    summaryEl.textContent = s.summary;
+    panelEl.className = 'narrative-panel ' + s.panelClass;
+    
+    // Impacts
+    impactsEl.innerHTML = s.impacts.map(im =>
+      '<div class="impact-item">' +
+      '<div class="impact-icon">' + im.i + '</div>' +
+      '<div class="impact-text"><strong>' + im.t + '</strong>' + im.d + '</div>' +
+      '</div>'
+    ).join('');
+    
+    // Table column highlight
+    tableCells.forEach(c => {
+      c.classList.remove('active', 't-2', 't-3');
+      if (parseInt(c.dataset.col) === t && t > 0) {
+        c.classList.add('active');
+        if (t === 2) c.classList.add('t-2');
+        if (t === 3) c.classList.add('t-3');
+      } else if (parseInt(c.dataset.col) === t) {
+        c.classList.add('active');
+      }
+    });
+    document.querySelectorAll('.species-table th[data-col]').forEach(th => {
+      th.style.color = (parseInt(th.dataset.col) === t) ? 'var(--accent)' : '';
+    });
+    
+    // SVG ranges - shift each group
+    document.querySelectorAll('.range-group[data-shifts]').forEach(g => {
+      const shifts = g.dataset.shifts.split(',').map(Number);
+      const targetShift = shifts[t] || 0;
+      g.style.transform = 'translateY(' + targetShift + 'px)';
+      
+      // Update line style based on T
+      const line = g.querySelector('.range-line');
+      const label = g.querySelector('.range-label');
+      if (line) {
+        line.classList.remove('range-current', 'range-future-1', 'range-future-2', 'range-future-3');
+        if (t === 0) line.classList.add('range-current');
+        else if (t === 1) line.classList.add('range-future-1');
+        else if (t === 2) line.classList.add('range-future-2');
+        else line.classList.add('range-future-3');
+      }
+      if (label) {
+        label.classList.remove('current', 'future');
+        label.classList.add(t === 0 ? 'current' : 'future');
+      }
+    });
+    
+    // Conditional appearance: ネッタイシマカ
+    document.getElementById('r-aedes-aegypti').classList.toggle('visible', t >= 2);
+    document.getElementById('r-aedes-aegypti-ext').classList.toggle('visible', t >= 3);
+    
+    // Fire ant intensity
+    const fireantDot = document.getElementById('fireant-dot');
+    if (fireantDot) {
+      fireantDot.setAttribute('r', String(4 + t * 1.5));
+      fireantDot.setAttribute('opacity', String(0.4 + t * 0.15));
+    }
+  }
+  
+  // Slider stops
+  stops.forEach(b => {
+    b.addEventListener('click', () => {
+      applyState(parseInt(b.dataset.t));
+    });
+  });
+  
+  // Keyboard
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+      applyState(Math.min(3, currentT + 1));
+      e.preventDefault();
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+      applyState(Math.max(0, currentT - 1));
+      e.preventDefault();
+    }
+  });
+  
+  // Drag slider thumb
+  let isDragging = false;
+  const trackWrap = document.querySelector('.slider-track-wrap');
+  
+  function getXFromEvent(e) {
+    return e.touches ? e.touches[0].clientX : e.clientX;
+  }
+  
+  function handleDrag(e) {
+    if (!isDragging) return;
+    const rect = trackWrap.getBoundingClientRect();
+    const x = getXFromEvent(e) - rect.left;
+    const pct = Math.max(0, Math.min(1, x / rect.width));
+    const t = Math.round(pct * 3);
+    if (t !== currentT) applyState(t);
+  }
+  
+  slider.addEventListener('mousedown', () => isDragging = true);
+  slider.addEventListener('touchstart', () => isDragging = true);
+  document.addEventListener('mousemove', handleDrag);
+  document.addEventListener('touchmove', handleDrag);
+  document.addEventListener('mouseup', () => isDragging = false);
+  document.addEventListener('touchend', () => isDragging = false);
+  
+  trackWrap.addEventListener('click', (e) => {
+    const rect = trackWrap.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const pct = Math.max(0, Math.min(1, x / rect.width));
+    const t = Math.round(pct * 3);
+    applyState(t);
+  });
+  
+  // Initialize
+  applyState(0);
+  
+  // Auto-advance demo on first load (optional)
+  // setTimeout(() => applyState(1), 1500);
+  // setTimeout(() => applyState(2), 3000);
+})();
+</script>
+
+</body>
+</html>
